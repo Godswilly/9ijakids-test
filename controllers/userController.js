@@ -13,13 +13,25 @@ const createUser = asyncHandler(async (req, res) => {
 
   res.status(201).json({
     status: 'success',
-    count: user.length,
     data: {
       user: newUser,
     },
   });
 });
 
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+
+  res.status(200).json({
+    status: 'success',
+    count: users.length,
+    data: {
+      users,
+    },
+  });
+});
+
 module.exports = {
   createUser,
+  getAllUsers,
 };
