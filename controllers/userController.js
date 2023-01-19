@@ -46,8 +46,27 @@ const getUser = asyncHandler(async (req, res) => {
   });
 });
 
+const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!user) {
+    throw new ErrorHandler('No user found with the given ID', 404);
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  });
+});
+
 module.exports = {
   createUser,
   getAllUsers,
   getUser,
+  updateUser,
 };
