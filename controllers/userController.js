@@ -64,9 +64,23 @@ const updateUser = asyncHandler(async (req, res) => {
   });
 });
 
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findByIdAndDelete(req.params.id);
+
+  if (!user) {
+    throw new ErrorHandler('No user found with the given ID', 404);
+  }
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
+
 module.exports = {
   createUser,
   getAllUsers,
   getUser,
   updateUser,
+  deleteUser,
 };
