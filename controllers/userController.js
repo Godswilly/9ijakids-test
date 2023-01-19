@@ -31,7 +31,23 @@ const getAllUsers = asyncHandler(async (req, res) => {
   });
 });
 
+const getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    throw new ErrorHandler('No user found with the given ID', 404);
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user,
+    },
+  });
+});
+
 module.exports = {
   createUser,
   getAllUsers,
+  getUser,
 };
