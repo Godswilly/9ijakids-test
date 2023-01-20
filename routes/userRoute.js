@@ -10,6 +10,10 @@ const {
 
 const router = express.Router();
 
+router.route('/').get(getAllUsers).post(createUser);
+
+router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
+
 /**
  * @swagger
  * components:
@@ -61,7 +65,7 @@ const router = express.Router();
  *               $ref: '#/components/schemas/User'
  *       500:
  *         description: Some server error
- * 
+ *
  *   get:
  *     summary: Lists all the users
  *     tags: [Users]
@@ -74,7 +78,7 @@ const router = express.Router();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/User'
- * 
+ *
  * /api/v1/users/{id}:
  *   get:
  *     summary: Get the user by id
@@ -95,7 +99,7 @@ const router = express.Router();
  *               $ref: '#/components/schemas/User'
  *       404:
  *         description: The user was not found
- * 
+ *
  *   patch:
  *    summary: Update the user by the id
  *    tags: [Users]
@@ -123,7 +127,7 @@ const router = express.Router();
  *        description: The user was not found
  *      500:
  *        description: Some error happened
- * 
+ *
  *   delete:
  *     summary: Remove the user by id
  *     tags: [Users]
@@ -140,9 +144,5 @@ const router = express.Router();
  *       404:
  *         description: The user was not found
  */
-
-router.route('/').get(getAllUsers).post(createUser);
-
-router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 module.exports = router;
