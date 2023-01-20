@@ -7,15 +7,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: [true, 'User must have a First Name'],
-    minlength: [3, 'Name must have more or equal to 3 characters'],
-    maxlength: [20, 'Name must have less or equal to 20 characters'],
   },
   lastName: {
     type: String,
     trim: true,
     required: [true, 'User must have a Last Name'],
-    minlength: [3, 'Name must have more or equal to 3 characters'],
-    maxlength: [20, 'Name must have less or equal to 20 characters'],
   },
   email: {
     type: String,
@@ -32,18 +28,12 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Please provide a password'],
-    minlength: [6, 'Minimum password length must be 6 characters'],
     select: false,
   },
   confirmPassword: {
     type: String,
     required: [true, 'Please confirm your password'],
-    // validate: {
-    //   validator: function (el) {
-    //     return el === this.password;
-    //   },
-    //   message: 'Passwords are not the same!!',
-    // },
+    select: false,
   },
   createdAt: {
     type: Date,

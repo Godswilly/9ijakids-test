@@ -1,5 +1,6 @@
 const asyncHandler = require('../utils/asyncHandler');
 const ErrorHandler = require('../utils/errorHandler');
+const { registerValidation } = require('../utils/validator');
 const {
   addUser,
   allUsers,
@@ -8,16 +9,14 @@ const {
   removeUser,
 } = require('../services/userServices');
 
-const createUser = asyncHandler(async (req, res, next) => {
-  const userInput = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    password: req.body.password,
-    confirmPassword: req.body.confirmPassword,
-  };
+const createUser = asyncHandler(async (req, res) => {
+  const { error } = registerValidation(req.body);
 
-  const newUser = await addUser(userInput);
+  if (error) {
+    throw new ErrorHandler(`${error.details[0].message}`);
+  }
+
+  const newUser = await addUser(req.body);
 
   res.status(201).json({
     status: 'success',
@@ -56,10 +55,20 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 const updateUser = asyncHandler(async (req, res) => {
+  const { error } = registerValidation(req.body);
+
+  if (error) {
+    throw new ErrorHandler(`${error.details[0].message}`);
+  }
+
   const user = await alterUser(req.params.id, req.body);
 
   if (!user) {
     throw new ErrorHandler('No user found with the given ID', 404);
+  }
+
+  if (error) {
+    throw new ErrorHandler(`${error.details[0].message}`);
   }
 
   res.status(200).json({
@@ -71,7 +80,7 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
-  const user = await  removeUser(req.params.id);
+  const user = await removeUser(req.params.id);
 
   if (!user) {
     throw new ErrorHandler('No user found with the given ID', 404);
