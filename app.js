@@ -4,12 +4,34 @@ const helmet = require('helmet');
 const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
 
 const userRouter = require('./routes/userRoute');
 const ErrorHandler = require('./utils/errorHandler');
 const globalErrorHandler = require('./controllers/errorController');
 
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'User API',
+      version: '1.0.0',
+      description: 'User API',
+    },
+    servers: [
+      {
+        url: 'http://localhost:8000',
+      },
+    ],
+  },
+  apis: ['./routes/*.js'],
+};
+
+const specs = swaggerJsdoc(options);
+
 const app = express();
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use(express.json());
 
@@ -29,7 +51,6 @@ app.use((req, res, next) => {
   next();
 });
 
-//routes
 app.use('/api/v1/users', userRouter);
 
 app.all('*', (req, res, next) => {
