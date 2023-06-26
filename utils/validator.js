@@ -17,4 +17,4 @@ const registerValidation = (body) => {
 
 module.exports = {
   registerValidation,
-}
+};

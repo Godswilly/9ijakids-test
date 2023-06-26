@@ -1,27 +1,18 @@
 const User = require('../models/userModel');
 
-const addUser = async (body) => {
-  return await User.create(body);
-};
+const addUser = async (body) => await User.create(body);
 
-const allUsers = async () => {
-  return await User.find({});
-};
+const allUsers = async () => await User.find({});
 
-const singleUser = async (params) => {
-  return await User.findById(params);
-};
+const singleUser = async (params) => await User.findById(params);
 
-const alterUser = async (params, body) => {
-  return await User.findByIdAndUpdate(params, body, {
+const alterUser = async (params, body) =>
+  await User.findByIdAndUpdate(params, body, {
     new: true,
     runValidators: true,
   });
-};
 
-const removeUser = async (params) => {
-  return await User.findByIdAndDelete(params);
-};
+const removeUser = async (params) => await User.findByIdAndDelete(params);
 
 module.exports = {
   addUser,
